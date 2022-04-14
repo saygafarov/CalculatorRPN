@@ -11,8 +11,8 @@ public class ParserToRPN {
     private StringBuilder output = new StringBuilder();
     private String [] stringsRPN;
 
-    public ParserToRPN(String in) {
-        tokens = in.trim().split(" ");
+    public ParserToRPN(String input) {
+            tokens = input.trim().split(" ");
     }
 
     private String parse() {
@@ -21,6 +21,7 @@ public class ParserToRPN {
             switch (sign) {
                 case "+", "-" -> gotSymbol(sign, 1);
                 case "*", "/" -> gotSymbol(sign, 2);
+                case "^" -> gotSymbol(sign, 3);
                 default -> output.append(sign).append(" ");
             }
         }
@@ -45,8 +46,11 @@ public class ParserToRPN {
 
                 if (sign.equals("+") || sign.equals("-"))
                     position = 1;
-                else
+                else if (sign.equals("*") || sign.equals("/"))
                     position = 2;
+                else
+                    position = 3;
+
 
                 if (position < priority) {
                     stack.push(sign);
@@ -59,7 +63,6 @@ public class ParserToRPN {
     }
 
     public String[] parserToRPN() {
-
         return this.stringsRPN = parse().trim().split(" ");
     }
 
